@@ -48,7 +48,7 @@ func main() {
 	psqlConn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s", host, port, user, password, dbname)
 
 	// Open database
-	db, err := sql.Open("qwikemart", psqlConn)
+	db, err := sql.Open("postgres", psqlConn)
 	if err != nil {
 		log.Fatalf("an error occured while connecting to database: %s", err)
 	}
