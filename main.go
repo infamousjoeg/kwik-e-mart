@@ -82,6 +82,6 @@ func main() {
 			log.Fatalf("error scanning returned row data: %s", err)
 		}
 
-		fmt.Printf("%d, %s, %s, %s", id, first_name, last_name, pmt_type)
+		fmt.Printf("%d, %s, %s, %s\n", id, first_name, last_name, pmt_type)
 	}
 }
