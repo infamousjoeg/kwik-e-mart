@@ -10,6 +10,7 @@ A simple Golang-based application that queries a PostgreSQL database named `qwik
 - [Build Binary From Source](#build-binary-from-source)
   - [Build for current OS and OS Architecture](#build-for-current-os-and-os-architecture)
   - [Build for different OS and OS Architecture](#build-for-different-os-and-os-architecture)
+- [Example Output](#example-output)
 - [License](#license)
 
 ## Database Structure
@@ -68,6 +69,25 @@ GOOS=windows GOARCH=amd64 go build .
 
 * `GOOS` is the operating system name
 * `GOARCH` is the architecture to compile for
+
+## Example Output
+
+```shell
+$ summon -p summon-conjur -e demo -f secrets.yml go run main.go
+-----------------------------------
+Connected successfully to conjur-demo.xxxxxxxxx.rds.amazonaws.com
+Database Username: apu
+Database Password: xxxxxxxx
+-----------------------------------
+
+id, first_name, last_name, pmt_type
+-----------------------------------
+1, Homer, Simpsons, cash
+2, Montgomery, Burns, credit
+3, Barney, Gumble, debit
+4, Waylon, Smithers, cash
+5, Ned, Flanders, debit
+```
 
 ## License
 

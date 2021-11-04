@@ -67,6 +67,12 @@ func main() {
 	// Close query connection
 	defer rows.Close()
 
+	fmt.Println("-----------------------------------")
+	fmt.Printf("Connected successfully to %s\n", host)
+	fmt.Printf("Database Username: %s\n", user)
+	fmt.Printf("Database Password: %s\n", password)
+	fmt.Println("-----------------------------------")
+	fmt.Println("")
 	fmt.Println("id, first_name, last_name, pmt_type")
 	fmt.Println("-----------------------------------")
 
