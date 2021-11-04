@@ -48,6 +48,10 @@ Table Name: `customers`
 summon -p $provider_name go run main.go
 ```
 
+```shell
+summon -p $provider_name -e $env_name go run main.go
+```
+
 ## Build Binary From Source
 
 ### Build for current OS and OS Architecture
