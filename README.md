@@ -1,5 +1,7 @@
 # Kwik-E-Mart Demo App <!-- omit in toc -->
 
+![image](https://user-images.githubusercontent.com/1924063/140587139-4e42d91a-1db4-4bc6-a3a8-c66874d56f08.png)
+
 A simple Golang-based application that queries a PostgreSQL database named `kwikemart` to read and return customer data stored in the `customers` table.
 
 - [Database Structure](#database-structure)
@@ -16,6 +18,7 @@ A simple Golang-based application that queries a PostgreSQL database named `kwik
 ## Database Structure
 
 Database Name: `kwikemart`
+
 Table Name: `customers`
 
 |id|first_name|last_name|pmt_type|
