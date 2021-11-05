@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	pg "github.com/infamousjoeg/qwik-e-mart/pkg/postgres"
+	pg "github.com/infamousjoeg/kwik-e-mart/pkg/postgres"
 )
 
 var (
