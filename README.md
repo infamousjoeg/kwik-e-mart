@@ -17,6 +17,11 @@ A simple Golang-based application that queries a PostgreSQL database named `kwik
 
 ## Database Structure
 
+```shell
+$ ./run.sh create_table
+$ ./run.sh insert_customers
+```
+
 Database Name: `kwikemart`
 
 Table Name: `customers`
@@ -30,6 +35,8 @@ Table Name: `customers`
 |5|Ned|Flanders|credit|
 
 ## Required Environment Variables
+
+Provided for [Summon](https://cyberark.github.io/summon) in [secrets.yml](secrets.yml).
 
 |variable name|expected value|
 |-|-|
