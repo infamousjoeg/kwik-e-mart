@@ -1,0 +1,7 @@
+.github/
+.gitignore
+.secrets.yml
+README.md
+LICENSE
+*.sh
+Makefile
