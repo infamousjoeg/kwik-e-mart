@@ -9,17 +9,20 @@ A simple Golang-based application that queries a PostgreSQL database named `kwik
 - [Run with Summon](#run-with-summon)
   - [Pre-Requisites](#pre-requisites)
   - [Command](#command)
-- [Build Binary From Source](#build-binary-from-source)
-  - [Build for current OS and OS Architecture](#build-for-current-os-and-os-architecture)
-  - [Build for different OS and OS Architecture](#build-for-different-os-and-os-architecture)
+- [Build](#build)
+  - [Binary From Source](#binary-from-source)
+    - [Build for current OS and OS Architecture](#build-for-current-os-and-os-architecture)
+    - [Build for different OS and OS Architecture](#build-for-different-os-and-os-architecture)
+  - [Build From Dockerfile](#build-from-dockerfile)
+    - [Run in Docker](#run-in-docker)
 - [Example Output](#example-output)
 - [License](#license)
 
 ## Database Structure
 
 ```shell
-$ ./run.sh create_table
-$ ./run.sh insert_customers
+$ make create_table
+$ make insert_customers
 ```
 
 Database Name: `kwikemart`
@@ -59,44 +62,71 @@ Provided for [Summon](https://cyberark.github.io/summon) in [secrets.yml](secret
 summon -p $provider_name go run main.go
 ```
 
-```shell
-summon -p $provider_name -e $env_name go run main.go
-```
-
-## Build Binary From Source
-
-### Build for current OS and OS Architecture
+OR
 
 ```shell
-go build .
+make run
 ```
 
-### Build for different OS and OS Architecture
+## Build
+
+### Binary From Source
+
+#### Build for current OS and OS Architecture
 
 ```shell
-GOOS=windows GOARCH=amd64 go build .
+go build -o bin/kwikemart .
 ```
 
-* `GOOS` is the operating system name
-* `GOARCH` is the architecture to compile for
+#### Build for different OS and OS Architecture
+
+```shell
+make compile
+```
+
+### Build From Dockerfile
+
+```shell
+make build
+```
+
+#### Run in Docker
+
+```shell
+summon -p summon-conjur docker run --name kwik-e-mart -d \
+  --restart unless-stopped \
+  --env-file @SUMMONENVFILE \
+  -p 8080:8080
+  nfmsjoeg/kwik-e-mart:latest
+```
+
+OR
+
+```shell
+make docker_run
+```
 
 ## Example Output
 
 ```shell
-$ summon -p summon-conjur -e demo -f secrets.yml go run main.go
------------------------------------
-Connected successfully to conjur-demo.xxxxxxxxx.rds.amazonaws.com
-Database Username: apu
-Database Password: xxxxxxxx
------------------------------------
+$ open http://localhost:8080
+```
 
-id, first_name, last_name, pmt_type
------------------------------------
-1, Homer, Simpsons, cash
-2, Montgomery, Burns, credit
-3, Barney, Gumble, debit
-4, Waylon, Smithers, cash
-5, Ned, Flanders, debit
+```html
+-------------------------------------------------------
+Connected successfully to conjur-demo.xxxxxx.rds.amazonaws.com
+Database Username: xxxxxx
+Database Password: xxxxxx
+-------------------------------------------------------
+
+id             first_name     last_name      pmt_type
+-------------------------------------------------------
+1              Homer          Simpson        cash
+2              Montgomery     Burns          credit
+3              Barney         Gumble         debit
+4              Waylon         Smithers       cash
+5              Ned            Flanders       credit
+
 ```
 
 ## License
