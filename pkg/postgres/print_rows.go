@@ -3,12 +3,16 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"net/http"
+	"text/tabwriter"
 )
 
 // PrintRows prints out the returned rows provided to the function
-func PrintRows(rows *sql.Rows) error {
-	fmt.Println("id, first_name, last_name, pmt_type")
-	fmt.Println("-----------------------------------")
+func PrintRows(w http.ResponseWriter, rows *sql.Rows) error {
+	t := tabwriter.NewWriter(w, 15, 4, 1, ' ', 0)
+	fmt.Fprintln(t, "id\tfirst_name\tlast_name\tpmt_type")
+	fmt.Fprintln(t, "-------------------------------------------------------")
+	t.Flush()
 
 	// Print returned rows
 	for rows.Next() {
@@ -21,8 +25,9 @@ func PrintRows(rows *sql.Rows) error {
 		if err != nil {
 			return fmt.Errorf("error scanning returned row data: %s", err)
 		}
-
-		fmt.Printf("%d, %s, %s, %s\n", id, first_name, last_name, pmt_type)
+		t := tabwriter.NewWriter(w, 15, 4, 1, ' ', 0)
+		fmt.Fprintf(t, "%d\t%s\t%s\t%s\n", id, first_name, last_name, pmt_type)
+		t.Flush()
 	}
 
 	return nil

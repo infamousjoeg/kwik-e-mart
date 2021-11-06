@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"time"
 
+	"github.com/gorilla/mux"
 	pg "github.com/infamousjoeg/kwik-e-mart/pkg/postgres"
 )
 
@@ -16,7 +19,8 @@ var (
 	dbname   = os.Getenv("DB_NAME")
 )
 
-func main() {
+// Index is the default route
+func Index(w http.ResponseWriter, r *http.Request) {
 	// Connect to the database
 	db, err := pg.Connect(host, port, user, password, dbname)
 	if err != nil {
@@ -30,15 +34,15 @@ func main() {
 	}
 
 	// Print connection information received in env vars
-	fmt.Println("-----------------------------------")
-	fmt.Printf("Connected successfully to %s\n", host)
-	fmt.Printf("Database Username: %s\n", user)
-	fmt.Printf("Database Password: %s\n", password)
-	fmt.Println("-----------------------------------")
-	fmt.Println("")
+	fmt.Fprintln(w, "-------------------------------------------------------")
+	fmt.Fprintf(w, "Connected successfully to %s\n", host)
+	fmt.Fprintf(w, "Database Username: %s\n", user)
+	fmt.Fprintf(w, "Database Password: %s\n", password)
+	fmt.Fprintln(w, "-------------------------------------------------------")
+	fmt.Fprintln(w, "")
 
 	// Print all rows returned
-	err = pg.PrintRows(rows)
+	err = pg.PrintRows(w, rows)
 	if err != nil {
 		log.Fatalf("%s", err)
 	}
@@ -46,4 +50,26 @@ func main() {
 	// Close query and connection
 	pg.CloseQuery(rows)
 	pg.Close(db)
+}
+
+func main() {
+	// Create new gorilla/mux router
+	router := mux.NewRouter()
+
+	// Add routes
+	router.HandleFunc("/", Index).Methods("GET")
+
+	// Start server
+	fmt.Println("-----------------------------------")
+	fmt.Println("Starting server on port 8080")
+	fmt.Println("-----------------------------------")
+	fmt.Println("Browse to: http://<dns>:8080")
+	srv := &http.Server{
+		Handler:      router,
+		Addr:         "0.0.0.0:8080",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	log.Fatal(srv.ListenAndServe())
 }
