@@ -7,16 +7,28 @@ import (
 	"os"
 	"time"
 
+	pg "github.com/aharriscybr/kwik-e-mart/pkg/postgres"
 	"github.com/gorilla/mux"
-	pg "github.com/infamousjoeg/kwik-e-mart/pkg/postgres"
 )
 
 var (
-	host     = os.Getenv("DB_HOST")
+	// Authn Data
+	token   = os.Getenv("CONJUR_TOKEN")
+	baseUri = os.Getenv("CONJUR_BASE")
+	accnt   = os.Getenv("CONJUR_ACCOUNT")
+	safe    = os.Getenv("CONJUR_SAFE")
+	query   = os.Getenv("CONJUR_QUERY")
+
+	// Default Paths
+	discoverPath  = baseUri + "/resources/" + accnt + "?kind=variable&search=" + safe + "/"
+	retrievalPath = baseUri + "/secrets?variable_ids="
+
+	// Defaults
+	host     = "host"
 	port     = 5432
-	user     = os.Getenv("DB_USERNAME")
-	password = os.Getenv("DB_PASSWORD")
-	dbname   = os.Getenv("DB_NAME")
+	user     = "user"
+	password = "pass"
+	dbname   = "dbname"
 )
 
 // Index is the default route
@@ -53,6 +65,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
+	secrets.init()
+
 	// Create new gorilla/mux router
 	router := mux.NewRouter()
 
