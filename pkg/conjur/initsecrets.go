@@ -97,6 +97,30 @@ func discover(t string, client *http.Client, query string) string {
 
 }
 
-func init() {
+func initSecrets(base string, token string, account string, safe string, query string) {
+
+	if base == "" {
+		log.Fatalf("%s not populated. Check your configuration and redeploy.", base)
+	}
+	if token == "" {
+		log.Fatalf("%s not populated. Check your configuration and redeploy.", token)
+	}
+	if account == "" {
+		log.Fatalf("%s not populated. Check your configuration and redeploy.", account)
+	}
+	if safe == "" {
+		log.Fatalf("%s not populated. Check your configuration and redeploy.", safe)
+	}
+	if query == "" {
+		log.Fatal("Base URI not populated. Check your configuration and redeploy.", query)
+	}
+
+	// Default Paths
+	discoverPath := base + "/resources/" + account + "?kind=variable&search=" + safe + "/"
+	retrievalPath := base + "/secrets?variable_ids="
+
+	log.Println(discoverPath)
+	log.Println(retrievalPath)
+
 	log.Println("called.")
 }

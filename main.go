@@ -19,10 +19,6 @@ var (
 	safe    = os.Getenv("CONJUR_SAFE")
 	query   = os.Getenv("CONJUR_QUERY")
 
-	// Default Paths
-	discoverPath  = baseUri + "/resources/" + accnt + "?kind=variable&search=" + safe + "/"
-	retrievalPath = baseUri + "/secrets?variable_ids="
-
 	// Defaults
 	host     = "host"
 	port     = 5432
@@ -65,6 +61,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
+	log.Println(conjur.initSecrets())
 
 	// Create new gorilla/mux router
 	router := mux.NewRouter()
