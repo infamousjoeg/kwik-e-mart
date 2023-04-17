@@ -20,18 +20,31 @@ var (
 	safe    = os.Getenv("CONJUR_SAFE")
 	query   = os.Getenv("CONJUR_QUERY")
 
-	// Defaults
-	host     = "host"
-	port     = 5432
-	user     = "user"
-	password = "pass"
-	dbname   = "dbname"
 )
 
 // Index is the default route
 func Index(w http.ResponseWriter, r *http.Request) {
+
+
+	secrets := conjur.GetData(baseUri, token, accnt, safe, query)
+
+	/*
+	*	secrets[0] is the user
+	*	secrets[1] is the pass
+	*	secrets[2] is the port
+	*	secrets[3] is the dbname
+	*	secrets[4] is the address
+	*/
+
+	portCon := 0
+	
+	_, err := fmt.Sscan(secrets[2], portCon)
+	if err != nil {
+		log.Println(err)
+	}
+
 	// Connect to the database
-	db, err := pg.Connect(host, port, user, password, dbname)
+	db, err := pg.Connect(secrets[4], portCon, secrets[0], secrets[1], secrets[3])
 	if err != nil {
 		log.Fatalf("%s", err)
 	}
@@ -44,9 +57,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	// Print connection information received in env vars
 	fmt.Fprintln(w, "-------------------------------------------------------")
-	fmt.Fprintf(w, "Connected successfully to %s\n", host)
-	fmt.Fprintf(w, "Database Username: %s\n", user)
-	fmt.Fprintf(w, "Database Password: %s\n", password)
+	fmt.Fprintf(w, "Connected successfully to %s\n", secrets[4])
+	fmt.Fprintf(w, "Database Username: %s\n", secrets[0])
+	fmt.Fprintf(w, "Database Password: %s\n", secrets[1])
 	fmt.Fprintln(w, "-------------------------------------------------------")
 	fmt.Fprintln(w, "")
 
@@ -62,8 +75,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-
-	conjur.GetData(baseUri, token, accnt, safe, query)
 
 	// Create new gorilla/mux router
 	router := mux.NewRouter()

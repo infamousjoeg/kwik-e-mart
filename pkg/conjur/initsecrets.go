@@ -18,8 +18,6 @@ type secret struct {
 }
 
 var (
-	emptyEnv     []string
-	discoverPath string
 	USER         string
 	PASS         string
 	ADDR         string
@@ -193,7 +191,7 @@ func initSecretData(authn string, client *http.Client, paths string, uri string)
 	*	payload[2] := PASS
 	*
 	* 	This is an example of implementing discovery and can be retrofit for any need.
-	 */
+	*/
 
 	payload[0] = USER
 	payload[1] = PASS
