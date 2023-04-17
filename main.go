@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
+	pg "github.com/aharriscybr/kwik-e-mart/pkg/postgres"
 	"github.com/gorilla/mux"
-	pg "github.com/infamousjoeg/kwik-e-mart/pkg/postgres"
 )
 
 var (
