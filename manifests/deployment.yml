@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: onboarding
+  name: onboarding
+spec:
+  selector:
+    matchLabels:
+      app: onboarding
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: onboarding
+    spec:
+      serviceAccountName: onboarding-sa
+      containers:
+        - name: onboarding
+          image: <APPLICATION-IMAGE>
+          ports:
+            - containerPort: 8443
+          env:
+          - name: CONJUR_BASE
+            value: ""
+          - name: CONJUR_ACCOUNT
+            value: "conjur"
+          - name: CONJUR_SAFE
+            value: "conjur"
+          - name: CONJUR_QUERY
+            value: "conjur"
+          envFrom:
+          - configMapRef:
+              name: conjur-connect
+          volumeMounts:
+          - mountPath: /run/conjur
+            name: conjur-access-token
+            readOnly: true
+## Conjur Authenticator Below
+        - image: cyberark/conjur-authn-k8s-client
+          imagePullPolicy: Always
+          name: authenticator
+          env:
+            - name: JWT_TOKEN_PATH
+              value: /var/run/secrets/tokens/jwt
+          envFrom:
+            - configMapRef:
+                name: conjur-connect
+          volumeMounts:
+            - mountPath: /run/conjur
+              name: conjur-access-token
+            - mountPath: /var/run/secrets/tokens
+              name: jwt-token
+      volumes:
+        - name: conjur-access-token
+          emptyDir:
+            medium: Memory
+        - name: jwt-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: jwt
+                  expirationSeconds: 6000
+                  audience: conjur
