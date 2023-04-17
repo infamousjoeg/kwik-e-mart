@@ -19,7 +19,10 @@ var (
 	accnt   = os.Getenv("CONJUR_ACCOUNT")
 	safe    = os.Getenv("CONJUR_SAFE")
 	query   = os.Getenv("CONJUR_QUERY")
+
+	// Port addresses
 	dbport = 5432
+	webport = 80
 
 )
 
@@ -51,8 +54,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	// Print connection information received in env vars
 	fmt.Fprintln(w, "-------------------------------------------------------")
-	fmt.Fprintf(w, "Connected successfully to %s\n", secrets[4])
-	fmt.Fprintf(w, "Database Username: %s\n", secrets[0])
+	fmt.Fprintf(w, "Connected successfully to %s as %s.\n", secrets[4], secrets[0])
 	fmt.Fprintln(w, "-------------------------------------------------------")
 	fmt.Fprintln(w, "")
 
@@ -76,10 +78,9 @@ func main() {
 	router.HandleFunc("/", Index).Methods("GET")
 
 	// Start server
-	fmt.Println("-----------------------------------")
-	fmt.Println("Starting server on port 8080")
-	fmt.Println("-----------------------------------")
-	fmt.Println("Browse to: http://<dns>:8080")
+	log.Println("-----------------------------------")
+	log.Printf("Starting server on port %d", webport)
+	log.Println("-----------------------------------")
 	srv := &http.Server{
 		Handler:      router,
 		Addr:         "0.0.0.0:8080",

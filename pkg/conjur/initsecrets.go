@@ -203,25 +203,25 @@ func initSecretData(authn string, client *http.Client, paths string, uri string)
 }
 
 
-//Returns data based on the query. In this instance USER,PASS,PORT,DBNAME,ADDRESS
+//Returns data based on the query provided. This will discover secrets from the provided safe and return data as implemented.
 func GetData(base string, token string, account string, safe string, query string) [5]string {
 
 	log.Println("Validating Variables.")
 
 	if base == "" {
-		log.Fatalf("%s not populated. Check your configuration and redeploy.", base)
+		log.Fatal("Base URI not populated. Check your configuration and redeploy.")
 	}
 	if token == "" {
-		log.Fatalf("%s not populated. Check your configuration and redeploy.", token)
+		log.Fatal("Token Path not populated. Check your configuration and redeploy.")
 	}
 	if account == "" {
-		log.Fatalf("%s not populated. Check your configuration and redeploy.", account)
+		log.Fatal("Conjur Account not populated. Check your configuration and redeploy.")
 	}
 	if safe == "" {
-		log.Fatalf("%s not populated. Check your configuration and redeploy.", safe)
+		log.Fatal("Safe not populated. Check your configuration and redeploy.")
 	}
 	if query == "" {
-		log.Fatal("Base URI not populated. Check your configuration and redeploy.", query)
+		log.Fatal("Query not populated. Check your configuration and redeploy.")
 	}
 
 	// Set up http Client
