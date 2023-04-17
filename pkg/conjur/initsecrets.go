@@ -202,6 +202,8 @@ func initSecretData(authn string, client *http.Client, paths string, uri string)
 	return payload
 }
 
+
+//Returns data based on the query. In this instance USER,PASS,PORT,DBNAME,ADDRESS
 func GetData(base string, token string, account string, safe string, query string) [5]string {
 
 	log.Println("Validating Variables.")
