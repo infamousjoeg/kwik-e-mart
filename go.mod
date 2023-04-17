@@ -1,4 +1,4 @@
-module github.com/infamousjoeg/kwik-e-mart
+module github.com/aharriscybr/kwik-e-mart
 
 go 1.17
 
