@@ -19,6 +19,7 @@ var (
 	accnt   = os.Getenv("CONJUR_ACCOUNT")
 	safe    = os.Getenv("CONJUR_SAFE")
 	query   = os.Getenv("CONJUR_QUERY")
+	dbport = 5432
 
 )
 
@@ -36,15 +37,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	*	secrets[4] is the address
 	*/
 
-	portCon := 0
-	
-	_, err := fmt.Sscan(secrets[2], portCon)
-	if err != nil {
-		log.Println(err)
-	}
-
 	// Connect to the database
-	db, err := pg.Connect(secrets[4], portCon, secrets[0], secrets[1], secrets[3])
+	db, err := pg.Connect(secrets[4], dbport, secrets[0], secrets[1], secrets[3])
 	if err != nil {
 		log.Fatalf("%s", err)
 	}
@@ -59,7 +53,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "-------------------------------------------------------")
 	fmt.Fprintf(w, "Connected successfully to %s\n", secrets[4])
 	fmt.Fprintf(w, "Database Username: %s\n", secrets[0])
-	fmt.Fprintf(w, "Database Password: %s\n", secrets[1])
 	fmt.Fprintln(w, "-------------------------------------------------------")
 	fmt.Fprintln(w, "")
 

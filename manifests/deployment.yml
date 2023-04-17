@@ -3,33 +3,35 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: onboarding
-  name: onboarding
+    app: app
+  name: app
 spec:
   selector:
     matchLabels:
-      app: onboarding
+      app: app
   replicas: 1
   template:
     metadata:
       labels:
-        app: onboarding
+        app: app
     spec:
-      serviceAccountName: onboarding-sa
+      serviceAccountName: services
       containers:
-        - name: onboarding
-          image: <APPLICATION-IMAGE>
+        - name: app
+          image: <img>
           ports:
-            - containerPort: 8443
+            - containerPort: 80
           env:
+          - name: CONJUR_TOKEN_PATH
+            value: "/run/conjur/access-token"
           - name: CONJUR_BASE
             value: ""
           - name: CONJUR_ACCOUNT
-            value: "conjur"
+            value: ""
           - name: CONJUR_SAFE
-            value: "conjur"
+            value: ""
           - name: CONJUR_QUERY
-            value: "conjur"
+            value: ""
           envFrom:
           - configMapRef:
               name: conjur-connect
