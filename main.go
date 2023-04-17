@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	conjur "github.com/aharriscybr/kwik-e-mart/pkg/conjur"
 	pg "github.com/aharriscybr/kwik-e-mart/pkg/postgres"
 	"github.com/gorilla/mux"
 )
@@ -62,7 +63,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	conjur.getData(baseUri, token, accnt, safe, query)
+	conjur.GetData(baseUri, token, accnt, safe, query)
 
 	// Create new gorilla/mux router
 	router := mux.NewRouter()

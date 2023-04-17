@@ -204,7 +204,7 @@ func initSecretData(authn string, client *http.Client, paths string, uri string)
 	return payload
 }
 
-func getData(base string, token string, account string, safe string, query string) [5]string {
+func GetData(base string, token string, account string, safe string, query string) [5]string {
 
 	log.Println("Validating Variables.")
 
@@ -237,7 +237,5 @@ func getData(base string, token string, account string, safe string, query strin
 
 	secrets := initSecretData(localToken, hClient, paths, retrievalPath)
 
-	log.Println(secrets)
-
-	log.Println("called.")
+	return secrets
 }
