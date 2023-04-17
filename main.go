@@ -14,7 +14,7 @@ import (
 
 var (
 	// Authn Data
-	token   = os.Getenv("CONJUR_TOKEN")
+	token   = os.Getenv("CONJUR_TOKEN_PATH")
 	baseUri = os.Getenv("CONJUR_BASE")
 	accnt   = os.Getenv("CONJUR_ACCOUNT")
 	safe    = os.Getenv("CONJUR_SAFE")
