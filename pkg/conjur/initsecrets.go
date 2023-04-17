@@ -14,7 +14,8 @@ type secret struct {
 }
 
 var (
-	emptyEnv []string
+	emptyEnv     []string
+	discoverPath string
 )
 
 func handleConjurAuthn(t string) string {

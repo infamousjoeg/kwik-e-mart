@@ -66,8 +66,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	secrets.init()
-
 	// Create new gorilla/mux router
 	router := mux.NewRouter()
 
