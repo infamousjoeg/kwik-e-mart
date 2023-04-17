@@ -20,6 +20,11 @@ type secret struct {
 var (
 	emptyEnv     []string
 	discoverPath string
+	USER         string
+	PASS         string
+	ADDR         string
+	DBNAME       string
+	PORT         string
 )
 
 func httpClient() *http.Client {
@@ -62,7 +67,7 @@ func handleConjurAuthn(t string) string {
 
 }
 
-func discover(t string, client *http.Client, query string, uri) string {
+func discover(authn string, client *http.Client, query string, uri string) string {
 
 	var sb strings.Builder
 
@@ -76,7 +81,7 @@ func discover(t string, client *http.Client, query string, uri) string {
 		return "false"
 
 	}
-	tokenHeader := "Token token=\"" + t + "\""
+	tokenHeader := "Token token=\"" + authn + "\""
 	req.Header.Add("Authorization", tokenHeader)
 
 	res, err := client.Do(req)
@@ -121,7 +126,7 @@ func discover(t string, client *http.Client, query string, uri) string {
 
 }
 
-func initSecretData(t string, client *http.Client, paths string, uri string) [5]string {
+func initSecretData(authn string, client *http.Client, paths string, uri string) [5]string {
 
 	authnUrl := uri + paths
 	method := "GET"
@@ -132,7 +137,7 @@ func initSecretData(t string, client *http.Client, paths string, uri string) [5]
 		log.Fatal(err)
 
 	}
-	tokenHeader := "Token token=\"" + t + "\""
+	tokenHeader := "Token token=\"" + authn + "\""
 	req.Header.Add("Authorization", tokenHeader)
 
 	res, err := client.Do(req)
@@ -164,19 +169,19 @@ func initSecretData(t string, client *http.Client, paths string, uri string) [5]
 		attrChk := k[lastIndex+1:]
 
 		if attrChk == "username" {
-			USER := v
+			USER = v
 		}
 		if attrChk == "password" {
-			PASS := v
+			PASS = v
 		}
 		if attrChk == "Port" {
-			PORT := v
+			PORT = v
 		}
 		if attrChk == "Database" {
-			DBNAME := v
+			DBNAME = v
 		}
 		if attrChk == "address" {
-			ADDR := v
+			ADDR = v
 		}
 	}
 
@@ -199,7 +204,7 @@ func initSecretData(t string, client *http.Client, paths string, uri string) [5]
 	return payload
 }
 
-func initSecrets(base string, token string, account string, safe string, query string) {
+func getData(base string, token string, account string, safe string, query string) [5]string {
 
 	log.Println("Validating Variables.")
 
