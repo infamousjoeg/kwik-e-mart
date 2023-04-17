@@ -1,5 +1,7 @@
 FROM golang as builder
 
+RUN apk update && apk add --no-cache git
+
 ENV GO111MODULE=on
 
 WORKDIR /app
@@ -7,7 +9,7 @@ WORKDIR /app
 COPY go.mod .
 COPY go.sum .
 
-RUN go mod download
+RUN go get -d -v
 
 COPY . .
 
