@@ -62,7 +62,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	log.Println(conjur.initSecrets(base, token, account, safe, query))
+	conjur.initSecrets(baseUri, token, accnt, safe, query)
 
 	// Create new gorilla/mux router
 	router := mux.NewRouter()
