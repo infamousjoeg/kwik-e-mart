@@ -1,0 +1,13 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: kwik-e-mart
+  labels:
+    name: kwik-e-mart
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: services
+  namespace: kwik-e-mart

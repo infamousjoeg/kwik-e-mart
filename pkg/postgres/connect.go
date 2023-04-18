@@ -41,7 +41,7 @@ func Connect(host string, port int, user string, password string, dbname string)
 	}
 
 	// Database connection string
-	psqlConn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s", host, port, user, password, dbname)
+	psqlConn := fmt.Sprintf("host=%s port=%d user=%s password=%s", host, port, user, password)
 
 	// Open database
 	db, err := sql.Open("postgres", psqlConn)
